@@ -1,0 +1,71 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage{hyperref}
+\usepackage{color}
+\usepackage{verbatim}
+
+
+
+% title
+\title{
+    \includegraphics[width=0.8\textwidth]{img/logo/polito_logo_2021_blu.jpg}
+    \\[1cm]
+    Computer Architectures and Operating Systems
+    \\[0.5cm] \hrulefill \\[0.5cm]
+    HackOSsim
+    \\[0.5cm] \hrulefill \\[0.5cm]
+  }
+\author{
+  Vincenzo Longo, 328843 \and
+  Giuseppe Famà, 333161  \and
+  Rachid Youssef Grib, 331354 
+}
+\date{20 September 2024} 
+
+
+\usepackage{listings}
+\usepackage[a4paper, margin=1in]{geometry}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage{multicol}
+\usepackage{float}
+
+
+
+\lstset{
+    basicstyle=\ttfamily\footnotesize, % Font type and size
+    breaklines=true,                   % Automatically break long lines
+    frame=single,                      % Add a frame around the code
+    tabsize=4,                         % Tab size
+    numbers=left,                      % Line numbers on the left
+    numberstyle=\tiny,                 % Line number font size
+    captionpos=b,                      % Caption position at bottom
+}
+
+
+
+
+
+
+\begin{document}
+
+\maketitle
+\newpage
+\begin{center}
+    \section*{Abstract}
+\end{center}
+The goal of this project consists in analysing and using the real time OS \textbf{FreeRTOS} exploiting the QEMU\footnote{It allows to emulate several types of hardware architectures.} simulator. In particular the primary objective of the assignment includes create a detailed tutorial for the \textbf{installation} and usage procedures, develop some \textbf{practical examples} to demonstrate the functionality of the operating system, customize the OS to implement \textbf{new memory management solutions} and finally \textbf{evaluate the performance} achieved by the newly implemented solution.
+\newpage
+\tableofcontents
+\newpage
+\input{installation}
+
+\input{demo_applications}
+
+\input{mem_management}
+
+\input{performance_evaluation}
+
+\input{conclusion}
+\end{document}

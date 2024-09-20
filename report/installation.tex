@@ -1,0 +1,44 @@
+\section{Installation and Usage Procedures' Tutorial}
+\label{sec:Installation and Usage Procedures' Tutorial}
+All the steps were performed on a 64 bits personal computer with Windows 11 operating system.
+For the installation and the configuration of QEMU and FreeRTOS we followed the online guide at this link \url{https://dev.to/iotbuilders/debugging-freertos-with-qemu-in-vscode-4j52}. 
+\subsection{FreeRTOS Distribution Download}
+\label{subsec:FreeRTOS Distribution Download}
+As the first thing, the FreeRTOS repository has been downloaded from GitHub at this link \url{https://github.com/FreeRTOS/FreeRTOS.git}.
+FreeRTOS is a market-leading embedded system RTOS supporting 40+ processor architectures. Moreover is a class of RTOS that is designed to be small enough to run on a microcontroller - although its use is not limited to microcontroller applications.
+
+
+\subsection{QEMU Machine Emulator Download}
+\label{subsec:QEMU Machine Emulator Download}
+QEMU is a machine emulator that allows to virtualize hardware types, even across different architectures. This can be very helpful for embedded development because the applications can be run against hardware targets that you may not have immediate access to.
+\newline
+The QEMU installer for Windows has been installed and then executed. After it has been added to the PATH environment variable. Adding programs to the \texttt{PATH} environment variable simplifies executing those programs from any location in the terminal or command line without needing to specify the full path to the executable every time.
+
+
+\subsection{Editor and required tools Installation} 
+\footnote{for more details follows the \texttt{installation.md} tutorial in the \texttt{docs/} directory}
+For running and debugging FreeRTOS on a specific hardware emulated by QEMU an editor is needed. For this purpose, VSCode has been installed. 
+Before the configuration of the environment the following tools are required:
+\begin{itemize}
+    \item \textbf{ARM GNU Toolchain};
+    \item \textbf{CMake}; 
+    \item \textbf{make}. \footnote{it was installed from a WSL terminal}
+\end{itemize}
+At this point, ARM GNU Compiler, CMake, and "make" installation paths have been added to the PATH environment variable. 
+
+\subsection{Environment Configuration}
+\label{subsec:Environment Configuration}
+Now everything is ready to be properly configured. Launch VSCode, select 'File $>$ Open Folder' in the menu. Then navigate to the FreeRTOS repository that has been downloaded before and select this subfolder: \texttt{.../FreeRTOS/FreeRTOS/Demo/CORTEX\_MPS2\_QEMU\_IAR\_GCC}.
+
+After VScode loads the demo folder, open \texttt{.vscode/launch.json} in the editor. Find the \texttt{miDebuggerPath} parameter and change the value to the path where \texttt{arm-none-eabi-gdb} is located on your machine. Finally open 'main.c' and make sure that \texttt{mainCREATE\_SIMPLE\_BLINKY\_DEMO\_ONLY } is set to \textbf{1}. This will generate only the simple blinky demo. Next, press the \textbf{Run and Debug} button from the left side panel in VSCode. Select \textbf{Launch QEMU RTOSDemo} from the dropdown at the top and press the \textbf{play} button. This will build the code, run the program, and attach the debugger. From there, you can \textbf{Continue}, \textbf{Step Over}, \textbf{Step Into}, \textbf{Step Out}, and \textbf{Stop } from the button bar. You can also add breakpoints in the code by right clicking next to the line number.
+
+\subsection{Building the Demo}
+\label{subsec: Building the Demo}
+To build the demo run the \texttt{make} command in the \texttt{FreeRTOS/FreeRTOS/Demo} \\\texttt{/CORTEX\_MPS2\_QEMU\_IAR\_GCC/build/gcc} directory. \\
+A successful build creates the \texttt{elf} file \texttt{FreeRTOS/FreeRTOS/Demo/CORTEX\_MPS2\_QEMU\_IAR\_GCC/build/} \\
+\texttt{gcc/output/RTOSDemo.out} \footnote{the building process will be automatically performed if the project is tested in VSCode as described in \ref{subsec:Environment Configuration}}.
+
+
+
+\newpage
+

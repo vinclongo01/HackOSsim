@@ -1,0 +1,77 @@
+\section{Memory Management}
+\label{sec: Memory Management}
+This section introduces the implementation of some heap allocation algorithms. \textbf{FreeRTOS} already provides some implementation for dynamic allocation (\texttt{heap\_x.c}).
+This project provides a revised version of \texttt{heap\_4.c} (\texttt{heap\_4\_revised.c}). The standard implementation of \texttt{heap\_4.c} uses by default the \textbf{first-fit} algorithm. The \texttt{heap\_4\_revised.c} version offers the possibility to choose an allocation algorithm among \textbf{first-fit}, \textbf{best-fit} and \textbf{worst-fit} by properly setting the \texttt{configHEAP\_ALLOCATION\_TYPE}'s value in the \texttt{FreeRTOSConfig.h} file.
+
+\subsection{Best-fit}
+\label{subsec: Best-Fit}
+\paragraph{Best-fit.} The best fit memory allocation strategy allocates the smallest available block that is still large enough to satisfy the requested size.
+\begin{lstlisting}[language=C,caption={Custom implementation of Best-Fit algorithm added to heap\_4.c}]
+if (configHEAP_ALLOCATION_TYPE == 1)
+    configASSERT( heapSUBTRACT_WILL_UNDERFLOW( pxBlock->xBlockSize, xWantedSize ) == 0 );
+    /* traverse the whole free block list */
+    while( pxBlock->pxNextFreeBlock != heapPROTECT_BLOCK_POINTER( NULL ) )
+    {
+        /* Check if the current block is a valid option and if another valid block
+           was found before and check whether is a best fit */
+        if  (   ( pxBlock->xBlockSize >= xWantedSize )
+                &&
+                (   pxBlockTmp == NULL
+                    ||
+                    ( ( pxBlock->xBlockSize - xWantedSize ) < ( pxBlockTmp->xBlockSize - xWantedSize ) )
+                )
+            )
+        {
+            pxPreviousBlockTmp = pxPreviousBlock;
+            pxBlockTmp = pxBlock;
+        }
+        pxPreviousBlock = pxBlock;
+        pxBlock = heapPROTECT_BLOCK_POINTER( pxBlock->pxNextFreeBlock );
+        heapVALIDATE_BLOCK_POINTER( pxBlock );
+    }
+    pxPreviousBlock = pxPreviousBlockTmp;
+    pxBlock = pxBlockTmp;
+\end{lstlisting}
+
+\subsection{Worst-fit}
+\paragraph{Worst-fit.} The worst fit memory allocation strategy allocates the largest available block of memory that can accommodate the requested size.
+\begin{lstlisting}[language=C,caption={Custom implementation of Worst-Fit algorithm added to heap\_4.c}]
+#elif (configHEAP_ALLOCATION_TYPE == 2)
+    configASSERT( heapSUBTRACT_WILL_UNDERFLOW( pxBlock->xBlockSize, xWantedSize ) == 0 );
+    /* traverse the whole free block list */
+    while( pxBlock->pxNextFreeBlock != heapPROTECT_BLOCK_POINTER( NULL ) )
+    {
+        /* Check if the current block is a valid option and if another valid block
+           was found before and check wheter is a worst fit */
+        if  (   ( pxBlock->xBlockSize >= xWantedSize )
+                &&
+                (   pxBlockTmp == NULL
+                    ||
+                    ( ( pxBlock->xBlockSize - xWantedSize ) > ( pxBlockTmp->xBlockSize - xWantedSize ) )
+                )
+            )
+        {
+            pxPreviousBlockTmp = pxPreviousBlock;
+            pxBlockTmp = pxBlock;
+        }
+        pxPreviousBlock = pxBlock;
+        pxBlock = heapPROTECT_BLOCK_POINTER( pxBlock->pxNextFreeBlock );
+        heapVALIDATE_BLOCK_POINTER( pxBlock );
+    }
+    pxPreviousBlock = pxPreviousBlockTmp;
+    pxBlock = pxBlockTmp;
+\end{lstlisting}
+
+\subsection{First-Fit}
+\paragraph{First-Fit.}The first fit memory allocation strategy allocates the first block of memory that is large enough to satisfy the requested size.
+
+\begin{lstlisting}[language=C,caption={Default implementation of First-fit algorithm}]
+#else
+    while( ( pxBlock->xBlockSize < xWantedSize ) && ( pxBlock->pxNextFreeBlock != heapPROTECT_BLOCK_POINTER( NULL ) ) )
+    {
+        pxPreviousBlock = pxBlock;
+        pxBlock = heapPROTECT_BLOCK_POINTER( pxBlock->pxNextFreeBlock );
+        heapVALIDATE_BLOCK_POINTER( pxBlock );
+    }
+#endif
+\end{lstlisting}

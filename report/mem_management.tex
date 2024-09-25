@@ -7,59 +7,55 @@ This project provides a revised version of \texttt{heap\_4.c} (\texttt{heap\_4\_
 \label{subsec: Best-Fit}
 \paragraph{Best-fit.} The best fit memory allocation strategy allocates the smallest available block that is still large enough to satisfy the requested size.
 \begin{lstlisting}[language=C,caption={Custom implementation of Best-Fit algorithm added to heap\_4.c}]
-if (configHEAP_ALLOCATION_TYPE == 1)
-    configASSERT( heapSUBTRACT_WILL_UNDERFLOW( pxBlock->xBlockSize, xWantedSize ) == 0 );
-    /* traverse the whole free block list */
-    while( pxBlock->pxNextFreeBlock != heapPROTECT_BLOCK_POINTER( NULL ) )
-    {
-        /* Check if the current block is a valid option and if another valid block
-           was found before and check whether is a best fit */
-        if  (   ( pxBlock->xBlockSize >= xWantedSize )
-                &&
-                (   pxBlockTmp == NULL
-                    ||
-                    ( ( pxBlock->xBlockSize - xWantedSize ) < ( pxBlockTmp->xBlockSize - xWantedSize ) )
-                )
-            )
+#if (configHEAP_ALLOCATION_TYPE == 1)
+        /* Pass through the list of bloks*/
+        while( pxBlock->pxNextFreeBlock != heapPROTECT_BLOCK_POINTER( NULL ) )
         {
-            pxPreviousBlockTmp = pxPreviousBlock;
-            pxBlockTmp = pxBlock;
+            /* Check if the current block is a valid option for the best fit algorithm  */
+            if  (   ( pxBlock->xBlockSize >= xWantedSize )
+                    &&
+                    (   temp == NULL
+                        ||
+                        ( ( temp->xBlockSize) > ( pxBlock->xBlockSize) )
+                    )
+                )
+            {
+                previousTemp = pxPreviousBlock;
+                temp = pxBlock;
+            }
+            pxPreviousBlock = pxBlock;
+            pxBlock = heapPROTECT_BLOCK_POINTER( pxBlock->pxNextFreeBlock );
+            heapVALIDATE_BLOCK_POINTER( pxBlock );
         }
-        pxPreviousBlock = pxBlock;
-        pxBlock = heapPROTECT_BLOCK_POINTER( pxBlock->pxNextFreeBlock );
-        heapVALIDATE_BLOCK_POINTER( pxBlock );
-    }
-    pxPreviousBlock = pxPreviousBlockTmp;
-    pxBlock = pxBlockTmp;
+        pxPreviousBlock = previousTemp;
+        pxBlock = temp;
 \end{lstlisting}
 
 \subsection{Worst-fit}
 \paragraph{Worst-fit.} The worst fit memory allocation strategy allocates the largest available block of memory that can accommodate the requested size.
 \begin{lstlisting}[language=C,caption={Custom implementation of Worst-Fit algorithm added to heap\_4.c}]
 #elif (configHEAP_ALLOCATION_TYPE == 2)
-    configASSERT( heapSUBTRACT_WILL_UNDERFLOW( pxBlock->xBlockSize, xWantedSize ) == 0 );
-    /* traverse the whole free block list */
+    /* Pass through the list of bloks */
     while( pxBlock->pxNextFreeBlock != heapPROTECT_BLOCK_POINTER( NULL ) )
     {
-        /* Check if the current block is a valid option and if another valid block
-           was found before and check wheter is a worst fit */
+        /* Check if the current block is a valid option for the worst fit algorithm  */
         if  (   ( pxBlock->xBlockSize >= xWantedSize )
                 &&
-                (   pxBlockTmp == NULL
+                (   temp == NULL
                     ||
-                    ( ( pxBlock->xBlockSize - xWantedSize ) > ( pxBlockTmp->xBlockSize - xWantedSize ) )
+                    ( ( ( temp->xBlockSize  ) < ( pxBlock->xBlockSize  ) ))
                 )
             )
         {
-            pxPreviousBlockTmp = pxPreviousBlock;
-            pxBlockTmp = pxBlock;
+            previousTemp = pxPreviousBlock;
+            temp = pxBlock;
         }
         pxPreviousBlock = pxBlock;
         pxBlock = heapPROTECT_BLOCK_POINTER( pxBlock->pxNextFreeBlock );
         heapVALIDATE_BLOCK_POINTER( pxBlock );
     }
-    pxPreviousBlock = pxPreviousBlockTmp;
-    pxBlock = pxBlockTmp;
+    pxPreviousBlock = previousTemp;
+    pxBlock = temp;
 \end{lstlisting}
 
 \subsection{First-Fit}

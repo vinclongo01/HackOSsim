@@ -73,23 +73,14 @@ The goal of this project consists in analysing and using the real time OS \hrefc
 \section{Task Management}
 \begin{frame}{Demo Applications}
     \begin{itemize}
-        \item \textbf{main\_three\_task\_CRUDE.c}
+        \item \textcolor{red}{\textbf{main\_three\_task\_CRUDE.c}}
         \begin{itemize}
             \item Tasks with the \textbf{SAME priority}.
             \item Each task implements the same function that \textbf{prints a message}.
             \item After printing the message, the task enters in a \textbf{loop} whose the unique functionality is the implementation of a \textbf{CRUDE delay}, i.e., which does not move the task in the \texttt{waiting list}.
         \end{itemize}
-        \item \textbf{main\_three\_task.c}
-        \begin{itemize}
-            \item \textbf{NO CRUDE DELAY}!
-            \item API function \texttt{VTaskDelayUntil()}.
-            \item This function just moves the task in the blocked state, making room for tasks in the ready state.
-        \end{itemize}
-        \item \textbf{main\_priority.c}
-        \begin{itemize}
-            \item More advanced example to show how \textbf{FreeRTOS scheduler} works.
-            \item One of the two tasks has dynamic priority.
-        \end{itemize}
+        \item \textcolor{gray}{\textbf{main\_three\_task.c}}
+        \item \textcolor{gray}{\textbf{main\_priority.c}}
     \end{itemize}
 \end{frame}
 
@@ -102,6 +93,20 @@ The goal of this project consists in analysing and using the real time OS \hrefc
     
 \end{frame}
 
+
+\begin{frame}{Demo Applications}
+    \begin{itemize}
+        \item \textcolor{gray}{\textbf{main\_three\_task\_CRUDE.c}}
+        \item \textcolor{red}{\textbf{main\_three\_task.c}}
+        \begin{itemize}
+            \item \textbf{NO CRUDE DELAY}!
+            \item API function \texttt{VTaskDelayUntil()}.
+            \item This function just moves the task in the blocked state, making room for tasks in the ready state.
+        \end{itemize}
+        \item \textcolor{gray}{\textbf{main\_priority.c}}
+    \end{itemize}
+\end{frame}
+
 \begin{frame}{Process Flow - main\_three\_task.c}
 
 \vfill
@@ -109,6 +114,19 @@ The goal of this project consists in analysing and using the real time OS \hrefc
 \includegraphics[width=0.65\linewidth]{img/three_tasks.png} 
 \vfill
     
+\end{frame}
+
+
+\begin{frame}{Demo Applications}
+    \begin{itemize}
+        \item \textcolor{gray}{\textbf{main\_three\_task\_CRUDE.c}}
+        \item \textcolor{gray}{\textbf{main\_three\_task.c}}
+        \item \textcolor{red}{\textbf{main\_priority.c}}
+        \begin{itemize}
+            \item More advanced example to show how \textbf{FreeRTOS scheduler} works.
+            \item One of the two tasks has dynamic priority.
+        \end{itemize}
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{Process Flow - main\_priority.c}
@@ -123,25 +141,13 @@ The goal of this project consists in analysing and using the real time OS \hrefc
 \section{Queue and Task Synchronization}
 \begin{frame}{Demo Applications}
         \begin{itemize}
-        \item \textbf{main\_queue.c}
+        \item \textcolor{red}{\textbf{main\_queue.c}}
         \begin{itemize}
             \item Three \textbf{PRODUCERS} and one \textbf{CONSUMER} (\textbf{highest priority}).
             \item The \textbf{CONSUMER} is blocked when the queue is empty, unblocking the \textbf{PRODUCERS}.
         \end{itemize}
-        \item \textbf{main\_semaphore.c}
-        \begin{itemize}
-            \item Three \textbf{PRODUCERS} and one \textbf{CONSUMER} handled with \textbf{two binary semaphores}.
-            \item At the beginning the \textbf{PRODUCERS} enter in the critical section \textbf{until the queue is fulfilled}.
-            \item Then the \textbf{CONSUMER} reads out all the data.
-            \item \textbf{Any priority can be used}! Semaphores synchronize the tasks.
-        \end{itemize}
-        \item \textbf{main\_semaphore2.c}
-        \begin{itemize}
-            \item Three \textbf{PRODUCERS} and one \textbf{CONSUMER} handled with \textbf{four semaphores} (3 binary and 1 counting).
-            \item Each \textbf{PRODUCER} inserts its value and unblocks the next task.
-            \item Once all the \textbf{PRODUCERS} inserted their values, the \textbf{CONSUMER} reads out all the items, then unblocks the first \textbf{PRODUCER}.
-            \item \textbf{Any priority can be used}! Semaphores synchronize the tasks.
-        \end{itemize}
+        \item \textcolor{gray}{\textbf{main\_semaphore.c}}
+        \item \textcolor{gray}{\textbf{main\_semaphore2.c}}
     \end{itemize}
 \end{frame}
 
@@ -154,6 +160,20 @@ The goal of this project consists in analysing and using the real time OS \hrefc
     
 \end{frame}
 
+\begin{frame}{Demo Applications}
+        \begin{itemize}
+        \item \textcolor{gray}{\textbf{main\_queue.c}}
+        \item \textcolor{red}{\textbf{main\_semaphore.c}}
+        \begin{itemize}
+            \item Three \textbf{PRODUCERS} and one \textbf{CONSUMER} handled with \textbf{two binary semaphores}.
+            \item At the beginning the \textbf{PRODUCERS} enter in the critical section \textbf{until the queue is fulfilled}.
+            \item Then the \textbf{CONSUMER} reads out all the data.
+            \item \textbf{Any priority can be used}! Semaphores synchronize the tasks.
+        \end{itemize}
+        \item \textcolor{gray}{\textbf{main\_semaphore2.c}}
+    \end{itemize}
+\end{frame}
+
 \begin{frame}{Precedence Diagrams - main\_semaphore.c}
 
 \vfill
@@ -161,6 +181,20 @@ The goal of this project consists in analysing and using the real time OS \hrefc
 \includegraphics[width=0.95\linewidth]{img/precedence_diagram_semaphore1.png} 
 \vfill
     
+\end{frame}
+
+\begin{frame}{Demo Applications}
+        \begin{itemize}
+        \item \textcolor{gray}{\textbf{main\_queue.c}}
+        \item \textcolor{gray}{\textbf{main\_semaphore.c}}
+        \item \textcolor{red}{\textbf{main\_semaphore2.c}}
+        \begin{itemize}
+            \item Three \textbf{PRODUCERS} and one \textbf{CONSUMER} handled with \textbf{four semaphores} (3 binary and 1 counting).
+            \item Each \textbf{PRODUCER} inserts its value and unblocks the next task.
+            \item Once all the \textbf{PRODUCERS} inserted their values, the \textbf{CONSUMER} reads out all the items, then unblocks the first \textbf{PRODUCER}.
+            \item \textbf{Any priority can be used}! Semaphores synchronize the tasks.
+        \end{itemize}
+    \end{itemize}
 \end{frame}
 
 \begin{frame}{Precedence Diagrams - main\_semaphore2.c}
